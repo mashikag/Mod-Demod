@@ -2,9 +2,9 @@ from point import Point
 from LookupTable import LookupTable
 import BitStringHelper as BSH
 
-
 LINEAR = 0
 GRAY = 1
+
 
 def createMod2LookupTable():
 	table = LookupTable()
@@ -135,7 +135,6 @@ def mod(bits, levels, encoding):
 		return modLevels4(bits, encoding)
 	if levels == 8:
 		return modLevels8(bits, encoding)
-
 
 def demod(symbols, levels, encoding):
 	if levels == 2:
