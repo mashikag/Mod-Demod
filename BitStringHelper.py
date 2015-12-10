@@ -9,3 +9,9 @@ def divideIntoBitStrings(bitList, bitsPerString):
 		bitStrings.append(string)
 
 	return bitStrings
+
+def stringToCharList(string):
+	chars = []
+	for char in string: 
+		chars.append(char)
+	return chars
