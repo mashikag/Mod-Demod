@@ -315,9 +315,6 @@ def demodLevels256(symbols, encoding):
 
 
 
-
-
-
 def createMod1024LookupTable(encoding):
 	table = LookupTable()
 
@@ -349,6 +346,254 @@ def demodLevels1024(symbols, encoding):
 
 
 
+def mirrorTopRightQuadrant(matrix):
+	quadSize = len(matrix[0]) / 2
+
+	for i in range(0, quadSize):
+		count = quadSize
+		stack = []
+		for j in range(0, quadSize * 2):
+			if count > 0:
+				stack.append(matrix[i][j])
+				count -= 1
+			else:
+				matrix[i][j] = stack.pop()
+
+	for i in range(0, quadSize * 2):
+		count = quadSize
+		stack = []
+		for j in range(0, quadSize * 2):
+			if count > 0:
+				stack.append(matrix[j][i])
+				count -= 1
+			else:
+				matrix[j][i] = stack.pop()
+
+	for i in range(0, quadSize * 2):
+		for j in range(0, quadSize * 2):
+			if matrix[i][j] != None:
+				if i < quadSize and j < quadSize:		#00
+					matrix[i][j] = "00" + matrix[i][j]
+				elif i < quadSize and j >= quadSize:	#01
+					matrix[i][j] = "01" + matrix[i][j]
+				elif j < quadSize and i >= quadSize:	#10
+					matrix[i][j] = "10" + matrix[i][j]
+				else:									#11
+					matrix[i][j] = "11" + matrix[i][j]
+
+
+
+def generateBaseBitStringMatrixMod32():
+	bitStrings = []
+	for i in range(0,6):
+		nextRow = []
+		for j in range(0,6):
+			nextRow.append(" ")
+		bitStrings.append(nextRow)
+
+	bitStrings[0][0] = None
+	bitStrings[0][5] = None
+	bitStrings[5][0] = None
+	bitStrings[5][5] = None
+	return bitStrings
+def createMod32LookupTable(encoding):
+	table = LookupTable()
+
+	points = generatePointsMatrix(6)
+	baseBitStrings = generateBaseBitStringMatrixMod32()
+	
+	if encoding == LINEAR:
+		linearList = BG.generateBitList(5)
+		index = 0
+		for i in range(0, 6):
+			for j in range(0, 6):
+				if baseBitStrings[i][j] != None:
+					baseBitStrings[i][j] = BSH.charListToString(linearList[index])
+					index += 1
+
+	else:
+		linearList = BG.generateBitList(3)
+		grayList = []
+		for value in linearList:
+			grayList.append(BSH.charListToString(Encoder.convertToGray(value)))
+
+		baseBitStrings[0][0] = None
+		baseBitStrings[0][1] = grayList[4]
+		baseBitStrings[0][2] = grayList[3]
+		baseBitStrings[1][0] = grayList[5]
+		baseBitStrings[1][1] = grayList[6]
+		baseBitStrings[1][2] = grayList[7]
+		baseBitStrings[2][0] = grayList[2]
+		baseBitStrings[2][1] = grayList[1]
+		baseBitStrings[2][2] = grayList[0]
+
+		mirrorTopRightQuadrant(baseBitStrings)
+
+	for i in range(0, 6):
+		for j in range(0, 6):
+			if baseBitStrings[i][j] != None:
+				table.add(baseBitStrings[i][j], points[i][j])	 
+
+	return table
+def modLevels32(bits, encoding):
+	modList = []
+	table = createMod32LookupTable(encoding)
+
+	symbols = BSH.divideIntoBitStrings(bits, 5)
+	for symbol in symbols:
+		moddedSymbol = table.getSymbol(symbol)
+		modList.append(moddedSymbol)
+
+	return modList
+def demodLevels32(symbols, encoding):
+	bits = []
+	table = createMod32LookupTable(encoding)
+
+	for symbol in symbols:
+		bits.extend(table.getBestMatchingBitSequence(symbol))
+	return bits
+
+
+def generateBaseBitStringMatrixMod128():
+	bitStrings = []
+	for i in range(0,12):
+		nextRow = []
+		for j in range(0,12):
+			nextRow.append(" ")
+		bitStrings.append(nextRow)
+
+	#top left
+	for i in range(0,2):
+		for j in range(0, 2):
+			bitStrings[i][j] = None
+
+	#top right
+	for i in range(0,2):
+		for j in range(10, 12):
+			bitStrings[i][j] = None
+
+	# bottom left
+	for i in range(10,12):
+		for j in range(0, 2):
+			bitStrings[i][j] = None
+
+	# bottom right
+	for i in range(10,12):
+		for j in range(10, 12):
+			bitStrings[i][j] = None
+
+	return bitStrings
+
+def createBlankSquareMatrix(side):
+	matrix = []
+	for i in range(0, side):
+		nextRow = []
+		for j in range(0, side):
+			nextRow.append('.')
+		matrix.append(nextRow)
+	return matrix
+def bottomLeftFillerMod128(matrix, i, j, startValue):
+	matrix[i+1][j] = startValue
+	startValue += 1
+	matrix[i+1][j+1] = startValue
+	startValue += 1
+	matrix[i][j+1] = startValue
+	startValue += 1
+	matrix[i][j] = startValue
+def topRightFillerMod128(matrix, i, j, startValue):
+	matrix[i][j+1] = startValue
+	startValue += 1
+	matrix[i][j] = startValue
+	startValue += 1
+	matrix[i+1][j] = startValue
+	startValue += 1
+	matrix[i+1][j+1] = startValue
+def noneFillerMod128(matrix, i, j):
+	matrix[i][j] = None
+	matrix[i+1][j] = None
+	matrix[i][j+1] = None
+	matrix[i+1][j+1] = None
+def fillInBitStringMatrixMod128(fullMatrix):
+	referenceArray = [[4,3,None], [7,6,5], [0,1,2]]
+	matrix = createBlankSquareMatrix(6)
+
+	for i in range(0, 6, 2):
+		for j in range(0, 6, 2):
+			startValue = referenceArray[i/2][j/2]
+			if startValue != None:
+				fillerMethod = bottomLeftFillerMod128
+				if(j % 4 != 0):
+					fillerMethod = topRightFillerMod128
+
+				fillerMethod(matrix, i, j, startValue * 4)
+			else:
+				noneFillerMod128(matrix, i, j)
+
+	reversedMatrix = []
+	for i in range(0,6):
+		nextRow = []
+		for j in range(0,6):
+			nextRow.insert(0,matrix[i][j])
+		reversedMatrix.append(nextRow)
+
+	for i in range(0, 6):
+		for j in range(0,6):
+			fullMatrix[i][j] = reversedMatrix[i][j]
+def replaceWithGrayCodeBinary(matrix, numberOfBits):
+	bitValues = BG.generateBitList(numberOfBits - 2);
+	grayValues = []
+	for bitValue in bitValues: 
+		grayValues.append(BSH.charListToString(Encoder.convertToGray(bitValue)))
+
+	for i in range(0,12):
+		for j in range(0,12):
+			if matrix[i][j] != None and matrix[i][j] != ' ':
+				matrix[i][j] = grayValues[int(matrix[i][j])]
+def createMod128LookupTable(encoding):
+	table = LookupTable()
+
+	points = generatePointsMatrix(12)
+	baseBitStrings = generateBaseBitStringMatrixMod128()
+	
+	if encoding == LINEAR:
+		linearList = BG.generateBitList(7)
+		index = 0
+		for i in range(0, 12):
+			for j in range(0, 12):
+				if baseBitStrings[i][j] != None:
+					baseBitStrings[i][j] = BSH.charListToString(linearList[index])
+					index += 1
+
+	else:
+		fillInBitStringMatrixMod128(baseBitStrings)
+		replaceWithGrayCodeBinary(baseBitStrings, 7)
+		mirrorTopRightQuadrant(baseBitStrings)
+		
+	for i in range(0, 12):
+		for j in range(0, 12):
+			if baseBitStrings[i][j] != None:
+				table.add(baseBitStrings[i][j], points[i][j])	 
+
+	return table
+
+def modLevels128(bits, encoding):
+	modList = []
+	table = createMod128LookupTable(encoding)
+
+	symbols = BSH.divideIntoBitStrings(bits, 7)
+	for symbol in symbols:
+		moddedSymbol = table.getSymbol(symbol)
+		modList.append(moddedSymbol)
+
+	return modList
+def demodLevels128(symbols, encoding):
+	bits = []
+	table = createMod128LookupTable(encoding)
+
+	for symbol in symbols:
+		bits.extend(table.getBestMatchingBitSequence(symbol))
+	return bits
+
 
 
 def mod(bits, levels, encoding):
@@ -360,13 +605,16 @@ def mod(bits, levels, encoding):
 		return modLevels8(bits, encoding)
 	if levels == 16:
 		return modLevels16(bits, encoding)
+	if levels == 32:
+		return modLevels32(bits, encoding)
 	if levels == 64:
 		return modLevels64(bits, encoding)
+	if levels == 128:
+		return modLevels128(bits, encoding)
 	if levels == 256:
 		return modLevels256(bits, encoding)
 	if levels == 1024:
 		return modLevels1024(bits, encoding)
-
 def demod(symbols, levels, encoding):
 	if levels == 2:
 		return demodLevels2(symbols)
@@ -376,8 +624,12 @@ def demod(symbols, levels, encoding):
 		return demodLevels8(symbols, encoding)
 	if levels == 16:
 		return demodLevels16(symbols, encoding)
+	if levels == 32:
+		return demodLevels32(symbols, encoding)
 	if levels == 64:
 		return demodLevels64(symbols, encoding)
+	if levels == 128:
+		return demodLevels128(symbols, encoding)
 	if levels == 256:
 		return demodLevels256(symbols, encoding)
 	if levels == 1024:
