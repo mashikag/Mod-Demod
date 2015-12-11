@@ -202,3 +202,29 @@ if(input == demod):
 	print "128-QAM Gray pass"
 else:
 	print "128-QAM Gray fail"
+
+
+
+
+
+# 512 QAM Linear
+test = "000000000111111111000011111111100000"
+input = BSH.stringToCharList(test)
+mod = QAM.mod(input, 512, 0)
+
+demod = QAM.demod(mod, 512, 0)
+
+if(input == demod):
+	print "512-QAM Linear pass"
+else:
+	print "512-QAM Linear fail"
+
+
+# 128 QAM Gray
+mod = QAM.mod(input, 512, 1)
+demod = QAM.demod(mod,512, 1)
+
+if(input == demod):
+	print "512-QAM Gray pass"
+else:
+	print "512-QAM Gray fail"
