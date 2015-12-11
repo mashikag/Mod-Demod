@@ -1,230 +1,114 @@
 import QAM
 import BitStringHelper as BSH
+import BitGenerator as BG
 
 
-# 2-QAM
-test = "11001001"
-input = BSH.stringToCharList(test)
-mod = QAM.mod(input, 2, 0)
-demod = QAM.demod(mod, 2, 0)
+def test(numberOfBits, numberOfLevels, encoding):
+	failures = 0
+	values = BG.generateBitList(numberOfBits)
 
-if (input == demod):
-	print "2-QAM pass"
-else:
-	print "2-QAM fail"
+	encString = "Linear"
+	if encoding == 1:
+		encString = "Gray"
 
-
-# 4 QAM Linear
-mod = QAM.mod(input, 4, 0)
-demod = QAM.demod(mod, 4, 0)
-
-if(input == demod):
-	print "4-QAM Linear pass"
-else:
-	print "4-QAM Linear fail"
+	print "\n{} QAM {} - number of permutations to test: {}".format(numberOfLevels, encString,len(values))
+	for value in values: 
+		mod = QAM.mod(value, numberOfLevels, encoding)
+		demod = QAM.demod(mod, numberOfLevels, encoding)
+		print value, " = ", demod
+		if value != demod:
+			failures += 1
+	print "{} QAM {} failures: {}\n".format(numberOfLevels,encString,failures)
 
 
-# 4 QAM Gray
-mod = QAM.mod(input, 4, 1)
-demod = QAM.demod(mod, 4, 1)
 
-if(input == demod):
-	print "4-QAM Gray pass"
-else:
-	print "4-QAM Gray fail"
+# Testing 2-QAM
+test(1,2,0)
+
+
+# Testing 4-QAM Linear
+test(2,4,0)
+
+
+# Testing 4-QAM Gray
+test(2,4,1)
+
+
 
 
 # 8 QAM Linear
-test = "111000101"
-input = BSH.stringToCharList(test)
-mod = QAM.mod(input, 8, 0)
-demod = QAM.demod(mod, 8, 0)
-
-if(input == demod):
-	print "8-QAM Linear pass"
-else:
-	print "8-QAM Linear fail"
+test(3,8,0)
 
 
-# 8 QAM Gray
-mod = QAM.mod(input, 8, 1)
-demod = QAM.demod(mod, 8, 1)
 
-if(input == demod):
-	print "8-QAM Gray pass"
-else:
-	print "8-QAM Gray fail"
-
+# 8 QAM Gary
+test(3,8,1)
 
 
 # 16 QAM Linear
-test = "1111000011000011"
-input = BSH.stringToCharList(test)
-mod = QAM.mod(input, 16, 0)
-demod = QAM.demod(mod, 16, 0)
-
-if(input == demod):
-	print "16-QAM Linear pass"
-else:
-	print "16-QAM Linear fail"
+test(4,16,0)
 
 
 # 16 QAM Gray
-mod = QAM.mod(input, 16, 1)
-demod = QAM.demod(mod, 16, 1)
-
-if(input == demod):
-	print "16-QAM Gray pass"
-else:
-	print "16-QAM Gray fail"
+test(4,16,1)
 
 
 
 
 # 64 QAM Linear
-test = "111111000000111000000111"
-input = BSH.stringToCharList(test)
-mod = QAM.mod(input, 64, 0)
-demod = QAM.demod(mod, 64, 0)
-
-if(input == demod):
-	print "64-QAM Linear pass"
-else:
-	print "64-QAM Linear fail"
+test(6,64,0)
 
 
 # 64 QAM Gray
-mod = QAM.mod(input, 64, 1)
-demod = QAM.demod(mod, 64, 1)
-
-if(input == demod):
-	print "64-QAM Gray pass"
-else:
-	print "64-QAM Gray fail"
-
+test(6,64,1)
 
 
 
 
 # 256 QAM Linear
-test = "00000000111111110000111111110000"
-input = BSH.stringToCharList(test)
-mod = QAM.mod(input, 256, 0)
-
-demod = QAM.demod(mod,256, 0)
-
-if(input == demod):
-	print "256-QAM Linear pass"
-else:
-	print "256-QAM Linear fail"
+test(8,256,0)
 
 
 # 256 QAM Gray
-mod = QAM.mod(input, 256, 1)
-demod = QAM.demod(mod,256, 1)
-
-if(input == demod):
-	print "256-QAM Gray pass"
-else:
-	print "256-QAM Gray fail"
+test(8,256,1)
 
 
 
 
 
 # 1024 QAM Linear
-test = "0000000000111111111100000111111111100000"
-input = BSH.stringToCharList(test)
-mod = QAM.mod(input, 1024, 0)
-
-demod = QAM.demod(mod,1024, 0)
-
-if(input == demod):
-	print "1024-QAM Linear pass"
-else:
-	print "1024-QAM Linear fail"
+test(10,1024,0)
 
 
 # 1024 QAM Gray
-mod = QAM.mod(input, 1024, 1)
-demod = QAM.demod(mod,1024, 1)
-
-if(input == demod):
-	print "1024-QAM Gray pass"
-else:
-	print "1024-QAM Gray fail"
+test(10,1024,1)
 
 
 
 # 32 QAM Linear
-test = "00000111110011111000"
-input = BSH.stringToCharList(test)
-mod = QAM.mod(input, 32, 0)
-
-demod = QAM.demod(mod, 32, 0)
-
-if(input == demod):
-	print "32-QAM Linear pass"
-else:
-	print "32-QAM Linear fail"
+test(5,32,0)
 
 
 # 32 QAM Gray
-mod = QAM.mod(input, 32, 1)
-demod = QAM.demod(mod,32, 1)
-
-if(input == demod):
-	print "32-QAM Gray pass"
-else:
-	print "32-QAM Gray fail"
+test(5,32,1)
 
 
 
 
 # 128 QAM Linear
-test = "0000000111111100011111110000"
-input = BSH.stringToCharList(test)
-mod = QAM.mod(input, 128, 0)
-
-demod = QAM.demod(mod, 128, 0)
-
-if(input == demod):
-	print "128-QAM Linear pass"
-else:
-	print "128-QAM Linear fail"
+test(7,128,0)
 
 
 # 128 QAM Gray
-mod = QAM.mod(input, 128, 1)
-demod = QAM.demod(mod,128, 1)
-
-if(input == demod):
-	print "128-QAM Gray pass"
-else:
-	print "128-QAM Gray fail"
+test(7,128,1)
 
 
 
 
 
 # 512 QAM Linear
-test = "000000000111111111000011111111100000"
-input = BSH.stringToCharList(test)
-mod = QAM.mod(input, 512, 0)
-
-demod = QAM.demod(mod, 512, 0)
-
-if(input == demod):
-	print "512-QAM Linear pass"
-else:
-	print "512-QAM Linear fail"
+test(9,512,0)
 
 
 # 128 QAM Gray
-mod = QAM.mod(input, 512, 1)
-demod = QAM.demod(mod,512, 1)
-
-if(input == demod):
-	print "512-QAM Gray pass"
-else:
-	print "512-QAM Gray fail"
+test(9,512,1)
