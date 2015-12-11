@@ -35,3 +35,11 @@ class LookupTable:
 		for entry in self.entries:
 			if(entry.bits == bitString):
 				return entry.point
+
+	def toString(self):
+		output = ""
+		for entry in self.entries:
+			output += "{} => {}".format(entry.bits, entry.point.toString())
+			output += "\n"
+		output += "SIZE: {}".format(len(self.entries))
+		return output

@@ -15,3 +15,9 @@ def stringToCharList(string):
 	for char in string: 
 		chars.append(char)
 	return chars
+
+def charListToString(charList):
+	string = ""
+	for char in charList:
+		string += char
+	return string
