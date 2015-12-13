@@ -232,7 +232,7 @@ baseBitStrings[2][0] = grayList[2]
 baseBitStrings[2][1] = grayList[1]
 baseBitStrings[2][2] = grayList[0]
 
-QAM.mirrorTopRightQuadrant(baseBitStrings)
+QAM.mirrorTopLeftQuadrant(baseBitStrings)
 
 print "32 QAM Gray"
 differByOneByOnly(baseBitStrings)
@@ -263,8 +263,10 @@ print "\n\n"
 baseBitStrings = QAM.generateBaseBitStringMatrixMod128()
 QAM.fillInBitStringMatrixMod128(baseBitStrings)
 QAM.replaceWithGrayCodeBinary(baseBitStrings, 7)
-QAM.mirrorTopRightQuadrant(baseBitStrings)
+QAM.mirrorTopLeftQuadrant(baseBitStrings)
 		
+print baseBitStrings
+
 print "128 QAM Gray"
 differByOneByOnly(baseBitStrings)
 print "\n\n"
@@ -291,7 +293,7 @@ print "\n\n"
 baseBitStrings = QAM.generateBaseBitStringMatrixMod512()
 QAM.fillInBitStringMatrixMod512(baseBitStrings)
 QAM.replaceWithGrayCodeBinary(baseBitStrings, 9)
-QAM.mirrorTopRightQuadrant(baseBitStrings)
+QAM.mirrorTopLeftQuadrant(baseBitStrings)
 
 print "512 QAM Gray"
 differByOneByOnly(baseBitStrings)

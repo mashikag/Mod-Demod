@@ -570,7 +570,10 @@ def noneFillerMod128(matrix, i, j):
 # Eg. if in the 32 QAM version a 0 was placed in that
 # location then in the 128 version the values 0,1,2,3
 # are placed in the 4 locations that map to the 
-# original 32 Qam location. 
+# original 32 Qam location. Rather than filling the
+# reference array with the bit sequences, the reference
+# array is filled with the decimal number representing 
+# the binary value. 
 def generateReferenceArrayFor128():
 	referenceArray = [[4,3,None], [7,6,5], [0,1,2]]
 	matrix = createBlankSquareMatrix(6)
@@ -589,6 +592,10 @@ def generateReferenceArrayFor128():
 	return matrix
 
 
+# Fills the reference array generated from the 32 QAM
+# pattern into the top left quadrant of a full sized
+# matrix so that it can be mirrored into the other quadrants 
+# as before
 def fillInBitStringMatrixMod128(fullMatrix):
 	referenceArray = [[4,3,None], [7,6,5], [0,1,2]]
 	matrix = generateReferenceArrayFor128()
@@ -604,6 +611,8 @@ def fillInBitStringMatrixMod128(fullMatrix):
 			fullMatrix[i][j] = reversedMatrix[i][j]
 
 
+# Replaces the index values used in the reference array with
+# Gray code values. 
 def replaceWithGrayCodeBinary(matrix, numberOfBits):
 	bitValues = BG.generateBitList(numberOfBits - 2);
 	grayValues = []
@@ -696,6 +705,10 @@ def generateBaseBitStringMatrixMod512():
 	return bitStrings
 
 
+# Generates a reference array for 512 based on 128. To see
+# how this is done look at the generateReferenceArrayFor128()
+# method above which does the same thing but uses QAM 32 as
+# a reference. 
 def generateReferenceArrayFor512():
 	referenceArray = generateReferenceArrayFor128()
 	matrix = createBlankSquareMatrix(12)
@@ -713,7 +726,8 @@ def generateReferenceArrayFor512():
 				noneFillerMod128(matrix, i, j)
 	return matrix
 
-
+# Copies the reference matrix into the top left
+# quadrant of the full matrix
 def fillInBitStringMatrixMod512(fullMatrix):
 	matrix = generateReferenceArrayFor512()
 	reversedMatrix = []
@@ -799,7 +813,7 @@ def mod(bits, levels, encoding):
 	if levels == 1024:
 		return modLevels1024(bits, encoding)
 
-		
+
 def demod(symbols, levels, encoding):
 	if levels == 2:
 		return demodLevels2(symbols)
