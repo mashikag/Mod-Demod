@@ -12,13 +12,13 @@ def createMod2LookupTable():
 	table.add('1', Point(1,0))
 	return table
 
+
 def modLevels2(bits):
 	modList = []
 	table = createMod2LookupTable()
 	for bit in bits:
 		modList.append(table.getSymbol(bit))
 	return modList
-
 
 
 def createMod4LinearLookupTable():
@@ -29,6 +29,7 @@ def createMod4LinearLookupTable():
 	table.add("11", Point(0,-1))
 	return table
 
+
 def createMod4GrayLookupTable():
 	table = LookupTable()
 	table.add("00", Point(1,0))
@@ -36,6 +37,7 @@ def createMod4GrayLookupTable():
 	table.add("11", Point(-1,0))
 	table.add("10",Point(0,-1))
 	return table
+
 
 def modLevels4(bits, encoding):
 	modList = []
@@ -54,7 +56,6 @@ def modLevels4(bits, encoding):
 	return modList	
 
 
-
 def createMod8LinearLookupTable():
 	table = LookupTable()
 	table.add('000', Point(1,0))
@@ -67,6 +68,7 @@ def createMod8LinearLookupTable():
 	table.add('111', Point(0.7071, -0.7071))
 	return table
 
+
 def createMod8GrayLookupTable():
 	table = LookupTable()
 	table.add("000", Point(1,0))
@@ -78,6 +80,7 @@ def createMod8GrayLookupTable():
 	table.add("011", Point(0,-1))
 	table.add("010", Point(0.7071, -0.7071))
 	return table
+
 
 def modLevels8(bits, encoding):
 	modList = []
@@ -94,13 +97,13 @@ def modLevels8(bits, encoding):
 	return modList
 
 
-
 def demodLevels2(symbols):
 	bits = []
 	table = createMod2LookupTable()
 	for symbol in symbols:
 		bits.extend(table.getBestMatchingBitSequence(symbol))
 	return bits
+
 
 def demodLevels4(symbols, encoding):
 	bits = []
@@ -113,6 +116,7 @@ def demodLevels4(symbols, encoding):
 	for symbol in symbols:
 		bits.extend(table.getBestMatchingBitSequence(symbol))
 	return bits
+
 
 def demodLevels8(symbols, encoding):
 	bits = []
@@ -127,7 +131,6 @@ def demodLevels8(symbols, encoding):
 	return bits
 
 
-
 def mod(bits, levels, encoding):
 	if levels == 2:
 		return modLevels2(bits)
@@ -135,6 +138,7 @@ def mod(bits, levels, encoding):
 		return modLevels4(bits, encoding)
 	if levels == 8:
 		return modLevels8(bits, encoding)
+
 
 def demod(symbols, levels, encoding):
 	if levels == 2:
