@@ -17,7 +17,7 @@ def testQAM(numberOfBits, numberOfLevels, encoding):
 	for value in values: 
 		mod = Modulation.mod(value, Modulation.MOD_SCHEME_QAM,numberOfLevels, encoding)
 		demod = Modulation.demod(mod, Modulation.MOD_SCHEME_QAM,numberOfLevels, encoding)
-		print value, " = ", demod
+		# print value, " = ", demod
 		if value != demod:
 			failures += 1
 	print "{} QAM {} failures: {}\n".format(numberOfLevels,encString,failures)
@@ -42,68 +42,69 @@ def testPSK(numberOfBits, numberOfLevels, encoding):
 
 
 
-# # Testing 2-QAM
+# Testing 2-QAM
 testQAM(1,2,0)
 
-# # Testing 4-QAM Linear
+# Testing 4-QAM Linear
 testQAM(2,4,0)
-# # Testing 4-QAM Gray
+# Testing 4-QAM Gray
 testQAM(2,4,1)
 
-# # 8 QAM Linear
-# testQAM(3,8,0)
-# # 8 QAM Gary
-# testQAM(3,8,1)
+# 8 QAM Linear
+testQAM(3,8,0)
+# 8 QAM Gary
+testQAM(3,8,1)
 
-# # 16 QAM Linear
-# testQAM(4,16,0)
-# # 16 QAM Gray
-# testQAM(4,16,1)
+# 16 QAM Linear
+testQAM(4,16,0)
+# 16 QAM Gray
+testQAM(4,16,1)
 
-# # 64 QAM Linear
-# testQAM(6,64,0)
-# # 64 QAM Gray
-# testQAM(6,64,1)
+# 64 QAM Linear
+testQAM(6,64,0)
+# 64 QAM Gray
+testQAM(6,64,1)
 
-# # 256 QAM Linear
-# testQAM(8,256,0)
-# # 256 QAM Gray
-# testQAM(8,256,1)
+# 256 QAM Linear
+testQAM(8,256,0)
+# 256 QAM Gray
+testQAM(8,256,1)
 
-# # 1024 QAM Linear
-# testQAM(10,1024,0)
-# # 1024 QAM Gray
-# testQAM(10,1024,1)
+# 1024 QAM Linear
+testQAM(10,1024,0)
+# 1024 QAM Gray
+testQAM(10,1024,1)
 
-# # 32 QAM Linear
-# testQAM(5,32,0)
-# # 32 QAM Gray
-# testQAM(5,32,1)
+# 32 QAM Linear
+testQAM(5,32,0)
+# 32 QAM Gray
+testQAM(5,32,1)
 
-# # 128 QAM Linear
-# testQAM(7,128,0)
-# # 128 QAM Gray
-# testQAM(7,128,1)
+# 128 QAM Linear
+testQAM(7,128,0)
+# 128 QAM Gray
+testQAM(7,128,1)
 
-# # 512 QAM Linear
-# testQAM(9,512,0)
-# # 128 QAM Gray
-# testQAM(9,512,1)
+# 512 QAM Linear
+testQAM(9,512,0)
+# 128 QAM Gray
+testQAM(9,512,1)
 
 
 
-# # 2 PSK
-# testPSK(1,2,0)
 
-# # 4 PSK Linear
-# testPSK(2, 4, 0)
-# # 4 PSK Gray
-# testPSK(2,4,1)
+# 2 PSK
+testPSK(1,2,0)
 
-# # 8 PSK Linear
-# testPSK(3,8,0)
-# # 8 PSK Gray
-# testPSK(3,8,1)
+# 4 PSK Linear
+testPSK(2, 4, 0)
+# 4 PSK Gray
+testPSK(2,4,1)
+
+# 8 PSK Linear
+testPSK(3,8,0)
+# 8 PSK Gray
+testPSK(3,8,1)
 
 
 
@@ -265,8 +266,6 @@ QAM.fillInBitStringMatrixMod128(baseBitStrings)
 QAM.replaceWithGrayCodeBinary(baseBitStrings, 7)
 QAM.mirrorTopLeftQuadrant(baseBitStrings)
 		
-print baseBitStrings
-
 print "128 QAM Gray"
 differByOneByOnly(baseBitStrings)
 print "\n\n"
