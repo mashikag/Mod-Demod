@@ -17,7 +17,7 @@ def testQAM(numberOfBits, numberOfLevels, encoding):
 	for value in values: 
 		mod = Modulation.mod(value, Modulation.MOD_SCHEME_QAM,numberOfLevels, encoding)
 		demod = Modulation.demod(mod, Modulation.MOD_SCHEME_QAM,numberOfLevels, encoding)
-		# print value, " = ", demod
+		#print value, " = ", demod
 		if value != demod:
 			failures += 1
 	print "{} QAM {} failures: {}\n".format(numberOfLevels,encString,failures)
@@ -34,7 +34,7 @@ def testPSK(numberOfBits, numberOfLevels, encoding):
 	for value in values: 
 		mod = Modulation.mod(value, Modulation.MOD_SCHEME_PSK,numberOfLevels, encoding)
 		demod = Modulation.demod(mod, Modulation.MOD_SCHEME_PSK,numberOfLevels, encoding)
-		print value, " = ", demod
+		#print value, " = ", demod
 		if value != demod:
 			failures += 1
 	print "{} PSK {} failures: {}\n".format(numberOfLevels,encString,failures)
