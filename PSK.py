@@ -97,6 +97,61 @@ def modLevels8(bits, encoding):
 	return modList
 
 
+def createMod16LinearLookupTable():
+	table = LookupTable()
+	table.add('0000', Point(1,0))
+	table.add('0001', Point(0.9239,0.3827))
+	table.add('0010', Point(0.7071,0.7071))
+	table.add('0011', Point(0.3827,0.9239))
+	table.add('0100', Point(0,1))
+	table.add('0101', Point(-0.3827,0.9239))
+	table.add('0110', Point(-0.7071,0.7071))
+	table.add('0111', Point(-0.9239,0.3827))
+	table.add('1000', Point(-1,0))
+	table.add('1001', Point(-0.9239,-0.3827))
+	table.add('1010', Point(-0.7071,-0.7071))
+	table.add('1011', Point(-0.3827,-0.9239))
+	table.add('1100', Point(0,-1))
+	table.add('1101', Point(0.3827,-0.9239))
+	table.add('1110', Point(0.7071,-0.7071))
+	table.add('1111', Point(0.9239,-0.3827))
+	return table
+
+def createMod16GrayLookupTable():
+	table = LookupTable()
+	table.add('0000', Point(1,0))
+	table.add('0001', Point(0.9239,0.3827))
+	table.add('0011', Point(0.7071,0.7071))
+	table.add('0010', Point(0.3827,0.9239))
+	table.add('0110', Point(0,1))
+	table.add('0111', Point(-0.3827,0.9239))
+	table.add('0101', Point(-0.7071,0.7071))
+	table.add('0100', Point(-0.9239,0.3827))
+	table.add('1100', Point(-1,0))
+	table.add('1101', Point(-0.9239,-0.3827))
+	table.add('1111', Point(-0.7071,-0.7071))
+	table.add('1110', Point(-0.3827,-0.9239))
+	table.add('1010', Point(0,-1))
+	table.add('1011', Point(0.3827,-0.9239))
+	table.add('1001', Point(0.7071,-0.7071))
+	table.add('1000', Point(0.9239,-0.3827))
+	return table
+
+def modLevels16(bits, encoding):
+	modList = []
+	table = None
+	if encoding == LINEAR:
+		table = createMod16LinearLookupTable()
+	else:
+		table = createMod16GrayLookupTable()
+
+	symbols = BSH.divideIntoBitStrings(bits, 4)
+	for symbol in symbols:
+		moddedSymbol = table.getSymbol(symbol)
+		modList.append(moddedSymbol)
+	return modList
+
+
 def demodLevels2(symbols):
 	bits = []
 	table = createMod2LookupTable()
@@ -130,6 +185,18 @@ def demodLevels8(symbols, encoding):
 		bits.extend(table.getBestMatchingBitSequence(symbol))
 	return bits
 
+def demodLevels16(symbols, encoding):
+	bits = []
+	table = None
+	if encoding == LINEAR:
+		table = createMod16LinearLookupTable()
+	else:
+		table = createMod16GrayLookupTable()
+
+	for symbol in symbols:
+		bits.extend(table.getBestMatchingBitSequence(symbol))
+	return bits
+
 
 def mod(bits, levels, encoding):
 	if levels == 2:
@@ -138,6 +205,8 @@ def mod(bits, levels, encoding):
 		return modLevels4(bits, encoding)
 	if levels == 8:
 		return modLevels8(bits, encoding)
+	if levels == 16:
+		return modLevels16(bits, encoding)
 
 
 def demod(symbols, levels, encoding):
@@ -147,3 +216,5 @@ def demod(symbols, levels, encoding):
 		return demodLevels4(symbols, encoding)
 	if levels == 8:
 		return demodLevels8(symbols, encoding)
+	if levels == 16:
+		return demodLevels16(symbols, encoding)

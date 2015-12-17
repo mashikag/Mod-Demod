@@ -91,8 +91,6 @@ testQAM(9,512,0)
 testQAM(9,512,1)
 
 
-
-
 # 2 PSK
 testPSK(1,2,0)
 
@@ -103,11 +101,15 @@ testPSK(2,4,1)
 
 # 8 PSK Linear
 testPSK(3,8,0)
+
 # 8 PSK Gray
 testPSK(3,8,1)
 
+# 16 PSK Linear
+testPSK(4,16,0)
 
-
+# 16 PSK Gray
+testPSK(4,16,1)
 
 
 
